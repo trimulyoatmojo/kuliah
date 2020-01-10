@@ -1,0 +1,48 @@
+import java.io.*;
+import java.util.*;
+public class TokenFile{
+	
+	public static void main(String args[]){
+		TokenFile tt=new TokenFile();
+		tt.dbTest();
+	}
+		public void dbTest(){
+			
+		DataInputStream dis=null;
+		String dbRecord=null;
+		
+		try{
+	File f=new File("Customer.txt");
+	FileInputStream fis=new FileInputStream(f);
+	BufferedInputStream		bis=new 
+	BufferedInputStream(fis);
+	dis=new DataInputStream(fis);
+	
+	//read dbRecord
+	while((dbRecord=dis.readLine())!=null){
+		
+		StringTokenizer st=new StringTokenizer(dbRecord, ":");
+		String namaDepan =st.nextTOken();
+		String namaBelakang=st.nextToken();
+		String kota=st.nextToken();
+		String propinsi=st.nextToken();
+		
+		System.out.println("Nama Depan :"+namaDepan);
+		System.out.println("Nama Belakang :"+namaBelakang);
+		System.out.println("lpta :"+kota);
+		System.out.println("Propinsi :"+propinsi+"\n");
+		
+	}catch (IOException e){
+		//catch eror
+		System.out.println("IOException 
+		error!"+e.getMessage());
+		
+	}finally{
+		if(dis!=null){
+			try{dis.close();
+			}catch (IOException ioe){
+			}
+		}
+	}
+		}
+		}

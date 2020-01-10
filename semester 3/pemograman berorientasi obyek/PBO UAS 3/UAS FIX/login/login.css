@@ -1,0 +1,49 @@
+body{
+    background-color:gold;
+    font-family:cursive;
+}
+h1{
+    color:indigo;
+}
+.username{
+    background-color:default;
+    width:200px;
+    height:30px;
+    border-color:blue;
+    border-width:2px;
+    border-radius:12px;
+    text-align:center;
+}
+.password{
+    background-color:default;
+    width:200px;
+    height:30px;
+    border-color:green;
+    border-width:2px;
+    border-radius:12px;
+    text-align:center;
+}
+.submit{
+    background-color:red;
+    width:100px;
+    height:30px;
+    border-color:orange;
+    border-width:2px;
+    border-radius:12px;
+}  
+/*pseduo*/
+.link{
+     text-decoration: none;
+}  
+.link:link {
+    color: ;
+}
+.link:hover {
+    font-family: cursive;
+    font-size: 10px;
+    color: white;
+}
+
+.link:active {
+    font-style: italic;
+}

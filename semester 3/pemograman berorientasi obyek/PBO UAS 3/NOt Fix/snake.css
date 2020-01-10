@@ -1,0 +1,22 @@
+#judul{
+	text-align: center;
+	color: blue;
+}
+#canvas{
+	  margin: auto;
+	  display: block;
+	  box-shadow: #ddd 0 0 3px 2px;
+	  background-color: #eee;
+	}
+
+#body{
+	  text-align: center;
+	}
+
+#button{
+	  border-radius: 50%;
+	  color: white;
+	  border: 0;
+	  background-color: cornflowerblue;
+	  margin-left: 10px;
+	}

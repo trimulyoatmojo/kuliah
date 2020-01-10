@@ -1,0 +1,212 @@
+var info = "Makan 30 makanan untuk menang. Swipe on ponsel or tekan tombol on keyboard.\n\nThis is the Classic ular game."
+	  var canvas = document.getElementById("canvas");
+	  var ctx = canvas.getContext("2d");
+	  var ular = [];
+	  //Membuat object array dengan koordinat x dan y
+	  for(j = 0; j < 3; j++){
+		ular.push({x: 150 - (j * 10), y: 150})
+	  }
+	  var dx = 10;
+	  var dy = 0;
+	  var makanan = {
+		x: 0,
+		y: 0,
+		live: false
+	  }
+	  var warnaKepala = true;
+	  var score = 0;
+
+	  function membuatUlar(){
+		warnaKepala = true;
+		//Menggambar setiap bagian dari ular
+		ular.forEach(function(parts){
+		  ctx.fillStyle = "forestgreen";
+		  if(warnaKepala){
+			ctx.fillStyle = "limegreen";
+		  }
+		  ctx.beginPath()
+		  ctx.arc(parts.x + 5, parts.y + 5, 5, 0, Math.PI * 2)
+		  ctx.fill();
+		  warnaKepala = false;
+		})
+	  }
+
+	  function pindah(){
+		//Memasukan bagian baru di kepala dan pindah the last
+		const kepala = {x: ular[0].x + dx, y: ular[0].y + dy};
+		ular.unshift(kepala);
+		ular.pop();
+	  }
+
+	  function random(){
+		return Math.floor(Math.random() * 30) * 10;
+	  }
+
+	  function checkMakanan(){
+		for(part of ular){
+		  if(part.x == makanan.x && part.y == makanan.y){
+			return false;
+		  }
+		}
+		return true;
+	  }
+
+	  function membuatMakanan(){
+		if(!makanan.live){
+		  makanan.x = random();
+		  makanan.y = random();
+		  while(!checkMakanan()){
+			makanan.x = random();
+			makanan.y = random();
+		  }
+		  makanan.live = true;
+		}
+	  }
+
+	  function menggambarMakanan(){
+		//Membuat dan menggambar makanan randomly
+		membuatMakanan();
+		ctx.fillStyle = "red";
+		ctx.fillRect(makanan.x, makanan.y, 10, 10)
+	  }
+
+	  function ifLose(){
+		for(i = 1; i < ular.length; i++){
+		  if(ular[0].x == ular[i].x && ular[0].y == ular[i].y){
+			return true;
+		  }
+		}
+	  }
+
+	  function check(){
+		//Jika makanan dimakan add new part in the head
+		if(ular[0].x == makanan.x && ular[0].y == makanan.y){
+		  makanan.live = false;
+		  ular.unshift({x: ular[0].x + dx, y: ular[0].y + dy});
+		  score ++;
+		  if(score >= 10){
+			alert("Anda menang, congratulation!!!. \nRefresh halaman untuk main lagi.")
+			clearInterval(frame);
+		  }
+		}
+		if(ular[0].x >= canvas.width){
+		  ular[0].x = 0
+		}
+		else if(ular[0].x < 0 ){
+		  ular[0].x = canvas.width;
+		}
+		else if(ular[0].y >= canvas.height){
+		  ular[0].y = 0 
+		}
+		else if(ular[0].y < 0){
+		  ular[0].y = canvas.height; 
+		}
+
+		if(ifLose()){
+		  alert("Ular anda mati :-(\nRefresh halaman untuk main lagi.")
+		  clearInterval(frame);
+		}
+	  }
+
+	  function membuatScore(){
+		ctx.beginPath();
+		ctx.fillStyle = "black"
+		ctx.font = "15px Arial"
+		ctx.fillText("Score:" + score, canvas.width - 70, 20)
+	  }
+
+	  var frame = setInterval(function(){
+		ctx.clearRect(0, 0, canvas.width, canvas.height)
+		pindah();
+		check();
+		membuatUlar();
+		menggambarMakanan();
+		membuatScore();
+	  }, 100)
+
+
+
+	  var startX;
+	  var startY;
+	  var endX;
+	  var endY;
+
+	  function handleTouch(start,end, cbL, cbR){
+		var xDist = endX - startX;
+		var yDist = endY - startY;
+
+		if(Math.abs(xDist) > Math.abs(yDist)){
+		  if(xDist > 0 && dx != -10){
+			direction("right")
+		  }
+		  else if(xDist < 0 && dx != 10){
+			direction("left")
+		  }
+		}
+		else{
+		  if(yDist > 0 && dy != -10){
+			direction("down")
+		  }
+		  else if(yDist < 10 && dy != 10){
+			direction("up")
+		  }
+		}
+	  }
+
+	  window.onload = function(){
+		var button = document.getElementById("button");
+		button.addEventListener("click", function(){
+		  alert(info)
+		})
+
+		//Detect the coordinates of the start of touch
+		window.addEventListener('touchstart', function(event){
+		  startX = event.touches[0].clientX;
+		  startY = event.touches[0].clientY;
+		})
+		//Detect the coordinates of the end of touch  
+		window.addEventListener('touchend', function(event){
+		endX = event.changedTouches[0].clientX;
+		endY = event.changedTouches[0].clientY;
+
+		handleTouch()
+		})
+
+		document.addEventListener("keydown", keyDownHandler, false);
+		//Checking the pressed key
+		function keyDownHandler(e){
+		  if(e.keyCode == 39 && dx != -10){
+			direction("right")
+		  }
+		  else if(e.keyCode == 37 && dx != 10){
+			direction("left")
+		  }
+		  else if(e.keyCode == 40 && dy != -10){
+			direction("down")
+		  }
+		  else if(e.keyCode == 38 && dy != 10){
+			direction("up")
+		  }
+		}
+	  }
+
+	  function direction(direct){
+		switch(direct){
+		  case "right":
+			dx = 10;
+			dy = 0;
+			break;
+		  case "left":
+			dx = -10;
+			dy = 0;
+			break;
+		  case "down":
+			dy = 10;
+			dx = 0;
+			break;
+		  case "up":
+			dy = -10;
+			dx = 0;
+			break;
+		}
+	  }

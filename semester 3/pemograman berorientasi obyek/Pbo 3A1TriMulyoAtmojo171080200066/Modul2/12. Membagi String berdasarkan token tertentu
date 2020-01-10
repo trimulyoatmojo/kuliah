@@ -1,0 +1,9 @@
+import java.util.*;
+public class TestToken {
+	public static void main(String argv[]){
+		String kalimat="Di sini Pencerahan Bersemi";
+		StringTokenzier		st 		=newStringTokenizer(kalimat," ");
+		while(st.hasMoreTokens()){
+			System.out.println(st.nextToken());
+		}
+	}	}
